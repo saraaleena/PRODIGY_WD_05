@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible"content="ie=edge">
+    <title> Weather App</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-style: oblique;
+            font-size: large;
+            background-image:url(https://pics.craiyon.com/2023-11-16/BjUZcXlZRQWOWgYFMXELWw.webp);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #ffffff;
+            text-align: center;
+            font-size: 80px;
+
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 30px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            text-align: center;
+            color: #ffffff;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+            border: 1px solid #ffffff;
+            border-radius: 5px;
+            text-align: center;
+            font-size: larger;
+        }
+
+        button {
+            background-color: #000000;
+            table-layout: initial;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #000000;
+        }
+
+        h2 {
+            margin-top: 20px;
+            color: #ffffff;
+            text-align: center;
+            font-size: 40px;
+        }
+
+        p {
+            margin: 20px 0;
+            color: #ffffff;
+            font-size: larger;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            align-content: center;
+
+        }
+
+        strong {
+            color: #000000;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="weather-container">
+        <h1>Weather Report</h1>
+        <label for="location">Enter city:</label>
+        <input type="text" id="location" placeholder="Enter city name">
+        <button onclick="getWeather()">Get Weather</button>
+
+        <h2>Weather Information</h2>
+        <div id="weather-info"></div>
+    </div>
+
+    <script>
+        function getWeather() {
+            const apiKey = 'e16f7bfebdd05cb6afdb766095f07252';
+            const locationInput = document.getElementById('location');
+            const location = locationInput.value;
+
+            if (!location) {
+                alert('Please enter a location');
+                return;
+            }
+
+            const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=metric`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    displayWeather(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching weather data:', error);
+                });
+        }
+
+        function displayWeather(data) {
+            const weatherInfoContainer = document.getElementById('weather-info');
+            weatherInfoContainer.innerHTML = `
+                <p><strong>City:</strong> ${data.name}</p>
+                <p><strong>Temperature:</strong> ${data.main.temp} °C</p>
+                <p><strong>Weather:</strong> ${data.weather[0].description}</p>
+                <p><strong>Humidity:</strong> ${data.main.humidity}%</p>
+                <p><strong>Wind Speed:</strong> ${data.wind.speed} m/s</p>
+            `;
+        }
+    </script>
+
+</body>
+</html>
